@@ -1,8 +1,13 @@
 import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import path from "path";
+import { fileURLToPath } from "url";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+
+// ✅ ES module __dirname equivalent
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
@@ -59,7 +64,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   if (app.get("env") === "development") {
     await setupVite(app, server);
   } else {
-    const clientDistPath = path.resolve(__dirname, "dist"); // <-- matches vite outDir
+    // Point to the actual Vite build folder
+    const clientDistPath = path.resolve(__dirname, "../client/dist");
     serveStatic(app, clientDistPath);
   }
 
