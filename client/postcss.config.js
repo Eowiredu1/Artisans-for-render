@@ -2,6 +2,6 @@
 export default {
   plugins: {
     tailwindcss: {},
-    autoprefixer: {}, // make sure this matches the installed package
+    autoprefixer: {},
   },
 };
