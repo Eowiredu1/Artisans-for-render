@@ -1,43 +1,35 @@
-import { Switch, Route } from "wouter";
-import { queryClient } from "./lib/queryClient";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { Toaster } from "@/components/ui/toaster";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { AuthProvider } from "@/hooks/use-auth";
-import { ProtectedRoute } from "./lib/protected-route";
-import HomePage from "@/pages/home-page";
-import AuthPage from "@/pages/auth-page";
-import MarketplacePage from "@/pages/marketplace";
-import SellerDashboard from "@/pages/seller-dashboard";
-import ProjectDashboard from "@/pages/project-dashboard";
-import AdminDashboard from "@/pages/admin-dashboard";
-import NotFound from "@/pages/not-found";
-
-function Router() {
-  return (
-    <Switch>
-      <Route path="/" component={HomePage} />
-      <Route path="/auth" component={AuthPage} />
-      <ProtectedRoute path="/marketplace" component={MarketplacePage} />
-      <ProtectedRoute path="/seller" component={SellerDashboard} roles={["seller", "admin"]} />
-      <ProtectedRoute path="/projects" component={ProjectDashboard} roles={["client", "admin"]} />
-      <ProtectedRoute path="/admin" component={AdminDashboard} roles={["admin"]} />
-      <Route component={NotFound} />
-    </Switch>
-  );
-}
+import { useState } from 'react'
+import reactLogo from './assets/react.svg'
+import viteLogo from '/vite.svg'
+import './App.css'
 
 function App() {
+  const [count, setCount] = useState(0)
+
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <AuthProvider>
-          <Toaster />
-          <Router />
-        </AuthProvider>
-      </TooltipProvider>
-    </QueryClientProvider>
-  );
+    <>
+      <div>
+        <a href="https://vite.dev" target="_blank">
+          <img src={viteLogo} className="logo" alt="Vite logo" />
+        </a>
+        <a href="https://react.dev" target="_blank">
+          <img src={reactLogo} className="logo react" alt="React logo" />
+        </a>
+      </div>
+      <h1>Vite + React</h1>
+      <div className="card">
+        <button onClick={() => setCount((count) => count + 1)}>
+          count is {count}
+        </button>
+        <p>
+          Edit <code>src/App.tsx</code> and save to test HMR
+        </p>
+      </div>
+      <p className="read-the-docs">
+        Click on the Vite and React logos to learn more
+      </p>
+    </>
+  )
 }
 
-export default App;
+export default App
