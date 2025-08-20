@@ -1,7 +1,7 @@
-/** @type {import('postcss').ProcessOptions} */
+// client/postcss.config.js
 export default {
   plugins: {
-    '@tailwindcss/postcss': {},
-    autoprefixer: {},
+    tailwindcss: {},
+    autoprefixer: {}, // make sure this matches the installed package
   },
 };
