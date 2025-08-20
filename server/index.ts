@@ -10,15 +10,15 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// ✅ CORS setup using environment variable
+// ✅ CORS setup
 app.use(
   cors({
-    origin: process.env.ALLOWED_ORIGIN, // frontend URL
-    credentials: true,                  // allow cookies/authorization headers
+    origin: process.env.ALLOWED_ORIGIN,
+    credentials: true,
   })
 );
 
-// ✅ Request logging middleware
+// ✅ Logging middleware
 app.use((req: Request, res: Response, next: NextFunction) => {
   const start = Date.now();
   const pathReq = req.path;
@@ -55,25 +55,17 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     throw err;
   });
 
-  // ✅ Dev mode with Vite, production serves static build
+  // ✅ Vite dev server in development, static in production
   if (app.get("env") === "development") {
     await setupVite(app, server);
   } else {
-    // Match this path to your Vite build folder
-    const clientDistPath = path.resolve("client/dist");
+    const clientDistPath = path.resolve(__dirname, "dist"); // <-- matches vite outDir
     serveStatic(app, clientDistPath);
   }
 
   // ✅ Start server
   const port = parseInt(process.env.PORT || "5000", 10);
-  server.listen(
-    {
-      port,
-      host: "0.0.0.0",
-      reusePort: true,
-    },
-    () => {
-      log(`Server running on port ${port}`);
-    }
-  );
+  server.listen({ port, host: "0.0.0.0", reusePort: true }, () => {
+    log(`Server running on port ${port}`);
+  });
 })();
