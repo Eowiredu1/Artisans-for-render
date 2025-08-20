@@ -1,8 +1,13 @@
 import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import path from "path";
+import { fileURLToPath } from "url";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+
+// ESM-compatible __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
@@ -59,9 +64,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   if (app.get("env") === "development") {
     await setupVite(app, server);
   } else {
-    // Make sure this matches your Vite build folder
-    const clientDistPath = path.resolve(__dirname, "dist");
-    serveStatic(app, clientDistPath); // updated serveStatic to accept path
+    const clientDistPath = path.resolve(__dirname, "client/dist"); // match your Vite build folder
+    serveStatic(app, clientDistPath); // make sure serveStatic accepts the path
   }
 
   // ✅ Start server
