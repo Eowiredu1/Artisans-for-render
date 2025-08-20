@@ -1,8 +1,9 @@
- import { defineConfig } from "vite";
+import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 import { fileURLToPath } from "url";
 
+// ESM replacement for __dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -20,8 +21,16 @@ export default defineConfig({
   },
 
   build: {
-    outDir: path.resolve(__dirname, "client/dist"), // Output directly inside client
-    emptyOutDir: true,
+    outDir: path.resolve(__dirname, "dist"), // Output at project root /dist
+    emptyOutDir: true,                        // Clear previous build
+    rollupOptions: {
+      output: {
+        // Optional: keep chunk size smaller
+        manualChunks: {
+          vendor: ["react", "react-dom"],
+        },
+      },
+    },
   },
 
   server: {
